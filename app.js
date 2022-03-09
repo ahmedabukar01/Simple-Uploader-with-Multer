@@ -19,6 +19,20 @@ app.set('view engine', 'ejs');
 // mongo ui
 const mongoURI = process.env.MONGO_URL;
 
+// create mongo connection
+const conn = mongoose.creatConnection(mongoURI);
+
+// Init gfs
+let gfs;
+
+conn.once('open', ()=>{
+    // init stream
+    gfs = Grid(conn.db, mongoose.mongo);
+    gfs.collection('uploads');
+}) 
+
+// create storage engine
+
 app.get('/', (req,res)=>{
     res.render('index');
 })
